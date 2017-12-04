@@ -79,7 +79,10 @@ function ControladorPeliculas() {
                     self.cargarListado(data.peliculas);
                     //se ejecuta la fucion cargarBotones() pasandole el total de peliculas que se obtienen como resultado
                     self.cargarBotones(data.total);
-                });
+                }
+            );
+            console.log(servidor + "/peliculas?" + query);
+            
         },
 
         //esta función recibe como parámetro todas las películas que se quieren mostrar y se encarga de crear los elementos html correspondientes
