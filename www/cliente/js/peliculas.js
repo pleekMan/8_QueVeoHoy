@@ -61,7 +61,7 @@ function ControladorPeliculas() {
             }
 
             //si se recibio como parametro la cantidad de resultados a mostrar se envia ese valor, sino, se piden 52 peliculas
-            query_params.cantidad = (cantidad) ? cantidad : 52;
+            query_params.cantidad = (cantidad) ? cantidad : 20;
 
             //el value de cada opcion de la lista de seleccion de "Ordenar por" esta formado por:
             //nombre de la columna por la que se va a ordenar - tipo de orden (descendente o ascendente)
@@ -122,7 +122,7 @@ function ControladorPeliculas() {
         //crea los botones de la paginación y les da la funcionalidad correspondiente
         this.cargarBotones = function(total) {
             //se establece que se van a mostrar 52 resultados por pagina
-            var cantidad_por_pagina = 52;
+            var cantidad_por_pagina = 20;
             var self = this;
             //la cantidad de paginas va a ser el total de resultados que existen dividido la cantidad de resultados que se
             //van a mostrar por pagina.
