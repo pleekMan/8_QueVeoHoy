@@ -20,7 +20,7 @@ module.exports = {
 			}
 			
 			if(req.query.titulo != undefined){
-				queryWhere += "titulo = '" + req.query.titulo + "' and ";
+				queryWhere += "titulo like '%" + req.query.titulo + "%' and ";
 			}
 			
 			if(req.query.genero != undefined){			
@@ -39,13 +39,48 @@ module.exports = {
 		
 		console.log("-|| QUERY FINAL => " + query);
 
-		db.query(query, function(error, datos){
-			
+		// ARMAMOS LA QUERY PARA OBTENER EL TOTAL DE PELIS, SIN EL LIMIT DE VIZ POR PAGINAS
+		var totalPelisQuery = query.replace("*", "count(*) as total");
+		var trimEndIndex = totalPelisQuery.indexOf("order");
+		totalPelisQuery = totalPelisQuery.slice(0,trimEndIndex);
+
+
+		console.log("-|| QUERY totalPelis => " + totalPelisQuery);
+
+
+
+
+		db.query(totalPelisQuery, function(error, datoTotal){
 			if(error){
-				return res.send(500,error); //  ((error)Code, errorLog)
+				return res.status(500).send("ERROR AL BUSCAR CANTIDAD DE PELICULAS"); //  ((error)Code, errorLog)
 			}
 
-			res.send(200, {peliculas:datos});
+			var totalPelis = datoTotal[0].total;
+
+			if(totalPelis != 0){
+
+				db.query(query, function(error, datos){
+			
+					if(error){
+						return res.status(500).send("ERROR AL BUSCAR DATOS DE CADA PELICULA"); //  ((error)Code, errorLog)
+					}
+					
+					var pelis = {
+						peliculas: datos,
+						total:  totalPelis, 
+					}
+
+					//console.log("-|| Pelis => " + pelis.peliculas);
+					//console.log("-|| Total => " + pelis.total);
+
+					res.status(200).send(200, pelis);
+		
+					console.log("-|| ================");
+		
+				});
+
+			}
+
 		});
 
 	},
