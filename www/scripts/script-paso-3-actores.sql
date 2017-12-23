@@ -1,4 +1,5 @@
-
+CREATE TABLE actor (id INT NOT NULL AUTO_INCREMENT, nombre VARCHAR(20), PRIMARY KEY(id));
+CREATE TABLE actor_pelicula (id INT NOT NULL AUTO_INCREMENT, actor_id INT NOT NULL, pelicula_id INT NOT NULL, PRIMARY KEY(id));
 
 INSERT INTO `actor` (`id`, `nombre`)
 VALUES
@@ -5071,4 +5072,3 @@ VALUES
 	(2962,319,743),
 	(2963,94,743),
 	(2964,2078,743);
-

@@ -1,3 +1,6 @@
+
+CREATE TABLE genero (id INT NOT NULL AUTO_INCREMENT, nombre VARCHAR(20), PRIMARY KEY(id));
+
 INSERT INTO `genero` (`id`, `nombre`)
 VALUES
 	(1,'Action'),
@@ -760,6 +763,3 @@ UPDATE pelicula SET pelicula.genero_id =5 WHERE pelicula.id =741;
 UPDATE pelicula SET pelicula.genero_id =8 WHERE pelicula.id =742;
 UPDATE pelicula SET pelicula.genero_id =7 WHERE pelicula.id =743;
 UPDATE pelicula SET pelicula.genero_id =1 WHERE pelicula.id =615;
-
-
-

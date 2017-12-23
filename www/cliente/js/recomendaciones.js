@@ -119,9 +119,12 @@ function ControladorRecomendaciones() {
             var query = "";
         }
 
+        console.log("-|| URL+Query: " + servidor + ruta + query);
+
         //se realiza el pedido de recomendacion al backend
         $.getJSON(servidor + ruta + query,
             function(data) {
+                console.log("-|| BUSCANDO DATA => pedirRecomendaciones()");
                 //la respuesta del backend va a ser un array del peliculas. Antes de guardar ese array mezclamos su contenido
                 //para que no siempre se muestren las peliculas en el mismo
                 var peliculas_desordenadas = self.desordenarArray(data.peliculas);
@@ -135,6 +138,7 @@ function ControladorRecomendaciones() {
 
     //esta funcion se encarga de mostrar una pelicula.
     this.seleccionarPelicula = function() {
+        console.log("-|| BUSCANDO DATA => seleccionarPelicula()");
         var cantidad = this.resultados.length;
         //si no hay mas resultados se ejecuta la funcion noHayResultados()
         if (cantidad === 0) {
@@ -153,6 +157,7 @@ function ControladorRecomendaciones() {
 
     //esta funcion recibe una pelicula y se encarga de mostrarla
     this.mostrarPelicula = function(data) {
+        console.log("-|| BUSCANDO DATA => mostrarPelicula()");
         $(".pregunta").hide();
         $(".header-title h1").addClass('small');
         $(".datos-pelicula").show();

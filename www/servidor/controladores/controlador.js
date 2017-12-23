@@ -11,6 +11,7 @@ module.exports = {
 		
 
 		var queryWhere = "";
+
 		if(req.query.anio != undefined || req.query.titulo != undefined || req.query.genero != undefined){
 			
 			var queryWhere = "where ";
@@ -92,6 +93,77 @@ module.exports = {
 			}
 
 			response.send(200, {generos:datos})
+		})
+	},
+
+	obtenerPeliculaData: function(request, response){
+
+		var peliId = request.params.id;
+
+		var queryString_PeliData = "select titulo, anio, poster, trama, fecha_lanzamiento, genero.nombre, director, duracion, puntuacion from pelicula join genero on pelicula.genero_id = genero.id where pelicula.id = " + peliId;
+		var queryStringActores = "select nombre from actor	join actor_pelicula on actor_pelicula.actor_id = actor.id where actor_pelicula.pelicula_id = " + peliId;
+
+		db.query(queryString_PeliData, function(error,datosPeli){
+			if(error){
+				return response.status(500);
+			}
+			
+			db.query(queryStringActores, function(error,datosActores){
+				if(error){
+					return response.status(500);
+				}
+			
+			var peliFull = {
+				pelicula : datosPeli[0],
+				actores: datosActores,
+
+			}
+			
+			
+
+			response.send(200, peliFull)
+
+			});
+		})
+	},
+
+	obtenerRecomendacion: function(request, response){
+
+		var genero = request.query.genero;
+		var anio_inicio = request.query.anio_inicio;
+		var anio_fin = request.query.anio_fin;
+		var puntuacion = request.query.puntuacion;
+		
+		var queryString = "select pelicula.id, titulo, poster, trama, genero.nombre from pelicula join genero on pelicula.genero_id = genero.id where ";
+
+		var whereString = "";
+
+		if(genero != undefined){
+			whereString += "genero.nombre = '" + genero + "' and ";
+		}
+		if(anio_inicio != undefined || anio_fin != undefined){
+			whereString += "pelicula.anio between " + anio_inicio + " and " + anio_fin + " and ";
+		}
+		if(puntuacion != undefined){
+			whereString += "puntuacion >= " + puntuacion + " and ";
+		}
+
+		whereString = whereString.slice(0,-5);
+		queryString += whereString;
+		//queryString += " order by rand() limit 1"
+
+		console.log("-|| QUERY STRING: " + queryString);
+
+		db.query(queryString, function(error,datos){
+			if(error){
+				return response.send(500,error);
+			}
+
+			var resultado = {
+				peliculas: datos,
+			};
+
+			response.send(200, resultado)
 		})
 	},
 }
